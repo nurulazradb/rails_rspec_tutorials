@@ -49,3 +49,38 @@ describe "mock_model(Widget) with stubs" do
     end
   end
 end
+
+describe "stub_model(Widget) with a hash of stubs" do
+  let(:widget) do
+    stub_model Widget, id: 5, random_attribute: true
+  end
+  
+  it "stubs :id" do
+    expect(widget.id).to eql(5)
+  end
+
+  it "stubs :random_attribute" do
+    expect(widget.random_attribute).to be_truthy
+  end
+
+  it "returns false for new_record? if :id is set" do
+    expect(widget).not_to be_new_record
+  end
+
+  it "can be converted to a new record" do
+    widget.as_new_record
+    expect(widget).to be_new_record
+  end
+end
+
+describe "stub_model(Widget) with a block of stubs" do
+  let(:widget) do
+    stub_model Widget do |widget|
+      widget.id = 5
+    end
+  end
+
+  it "stubs :id" do
+    expect(widget.id).to eql(5)
+  end
+end
